@@ -17,7 +17,10 @@ var CitySim = {
         top,
         bottom,
         texture,
-        info;
+        info,
+        mesh,
+        i, // For iterating below
+        j; // For iterating below
 
     renderer = new THREE.WebGLRenderer( { antialias: false, alpha: false } );
     renderer.setClearColor( 0xd8e7ff );
@@ -58,7 +61,7 @@ var CitySim = {
     light = new THREE.Color( 0xffffff );
     shadow = new THREE.Color( 0x303050 );
 
-    for ( var i = 0; i < 20000; i ++ ) {
+    for ( i = 0; i < 20000; i ++ ) {
 
       value = 1 - Math.random() * Math.random();
       color = new THREE.Color().setRGB( value + Math.random() * 0.1, value, value + Math.random() * 0.1 );
@@ -74,7 +77,7 @@ var CitySim = {
 
       geometry = building.geometry;
 
-      for ( var j = 0, jl = geometry.faces.length; j < jl; j ++ ) {
+      for ( j = 0, jl = geometry.faces.length; j < jl; j ++ ) {
         if ( j === 2 ) {
           geometry.faces[ j ].vertexColors = [ color, color, color, color ];
         } else {
@@ -89,7 +92,7 @@ var CitySim = {
     texture.anisotropy = renderer.getMaxAnisotropy();
     texture.needsUpdate = true;
 
-    var mesh = new THREE.Mesh( city, new THREE.MeshLambertMaterial( { map: texture, vertexColors: THREE.VertexColors } ) );
+    mesh = new THREE.Mesh( city, new THREE.MeshLambertMaterial( { map: texture, vertexColors: THREE.VertexColors } ) );
     scene.add( mesh );
 
     //
@@ -111,7 +114,9 @@ var CitySim = {
     var canvas,
         context,
         canvas2,
-        context;
+        context,
+        y,
+        value;
 
 
     canvas = document.createElement( 'canvas' );
@@ -123,15 +128,11 @@ var CitySim = {
     context.fillRect( 0, 0, 32, 64 );
 
     for ( var y = 2; y < 64; y += 2 ) {
-
-      for ( var x = 0; x < 32; x += 2 ) {
-
-        var value = Math.floor( Math.random() * 64 );
+      for ( x = 0; x < 32; x += 2 ) {
+        value = Math.floor( Math.random() * 64 );
         context.fillStyle = 'rgb(' + [ value, value, value ].join( ',' )  + ')';
         context.fillRect( x, y, 2, 1 );
-
       }
-
     }
 
     canvas2 = document.createElement( 'canvas' );
